@@ -49,9 +49,20 @@ def add_alias():
     print(f"To apply the alias, run the following command:")
     print(f"source {rc_file}")
 
+def chmod_websrv_files():
+    websrv_dir = os.path.expanduser("~/.local/bin/websrv")
+    if os.path.exists(websrv_dir):
+        for root, dirs, files in os.walk(websrv_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                subprocess.run(["chmod", "+x", file_path])
+                print(f"Made executable: {file_path}")
+    else:
+        print(f"Directory not found: {websrv_dir}")
+
 if __name__ == "__main__":
     local_bin_dir = check_and_create_local_bin()
     unzip_files(local_bin_dir)
     install_dependencies()
     add_alias()
-
+    chmod_websrv_files()
